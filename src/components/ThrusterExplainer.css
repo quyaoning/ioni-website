@@ -1,0 +1,252 @@
+.thruster {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: radial-gradient(ellipse at 40% 40%, rgba(123, 92, 255, 0.08), transparent 60%),
+    linear-gradient(180deg, var(--surface) 0%, var(--bg-2) 100%);
+  overflow: hidden;
+}
+
+.thruster-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.thruster-tabs button {
+  flex: 1 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  padding: 0.7em 1em;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.thruster-tabs button:hover {
+  color: var(--text);
+  background: rgba(120, 190, 255, 0.06);
+}
+
+.thruster-tabs button.is-active {
+  color: var(--text);
+  background: var(--cyan-dim);
+  border-color: rgba(56, 214, 247, 0.35);
+}
+
+.tab-index {
+  font-variant-numeric: tabular-nums;
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.thruster-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 12px 8px 0;
+}
+
+.thruster-svg .axis {
+  stroke: rgba(120, 190, 255, 0.12);
+  stroke-dasharray: 4 6;
+}
+
+.thruster-svg .stage {
+  cursor: pointer;
+  opacity: 0.42;
+  transition: opacity 0.25s;
+}
+
+.thruster-svg .stage:hover,
+.thruster-svg .stage.is-active {
+  opacity: 1;
+}
+
+.thruster-svg .hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1.5;
+  transition: stroke 0.25s, fill 0.25s;
+}
+
+.thruster-svg .stage.is-active .hit {
+  stroke: rgba(56, 214, 247, 0.45);
+  fill: rgba(56, 214, 247, 0.04);
+  stroke-dasharray: 5 5;
+}
+
+.thruster-svg .tube {
+  fill: rgba(200, 230, 255, 0.07);
+  stroke: #9fd8ff;
+  stroke-width: 1.5;
+}
+
+.thruster-svg .pin {
+  stroke: var(--amber);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.thruster-svg .collar {
+  fill: #7d8da3;
+  stroke: #b8c6d8;
+  stroke-width: 1;
+}
+
+.thruster-svg .body {
+  fill: rgba(140, 170, 205, 0.06);
+  stroke: #8fb3d8;
+  stroke-width: 1.6;
+}
+
+.thruster-svg .magnet {
+  fill: var(--amber);
+  opacity: 0.85;
+}
+
+.thruster-svg .grid {
+  stroke: #cfe6ff;
+  stroke-width: 4;
+  stroke-dasharray: 14 7;
+}
+
+.thruster-svg .grid-accel {
+  stroke: var(--cyan);
+}
+
+.thruster-svg .label,
+.thruster-svg .caption {
+  fill: var(--muted);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.thruster-svg .stage.is-active .caption {
+  fill: var(--cyan);
+}
+
+.thruster-svg .electron {
+  fill: var(--cyan);
+  animation: electron-drift 3.5s linear infinite;
+  opacity: 0;
+}
+
+.thruster-svg .ion {
+  fill: var(--amber);
+  animation: ion-fly 3s linear infinite;
+  opacity: 0;
+}
+
+@keyframes electron-drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(200px, -14px);
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(420px, 10px);
+    opacity: 0;
+  }
+}
+
+@keyframes ion-fly {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(330px, 0);
+    opacity: 0;
+  }
+}
+
+.thruster-panel {
+  padding: 22px clamp(18px, 3vw, 32px) 26px;
+  border-top: 1px solid var(--line);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+
+.panel-head h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.thruster-panel p {
+  color: var(--muted);
+  max-width: 72ch;
+}
+
+.thruster-panel ul {
+  margin: 0 0 1.1rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.thruster-panel li {
+  position: relative;
+  padding-left: 1.3em;
+}
+
+.thruster-panel li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.panel-link {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 560px) {
+  .thruster-tabs button {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.15em;
+    font-size: 0.82rem;
+    line-height: 1.25;
+    padding: 0.55em 0.4em;
+    text-align: center;
+  }
+}

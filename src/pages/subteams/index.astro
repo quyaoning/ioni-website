@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { url } from '../../lib/url';
+
+const subteams = (await getCollection('subteams')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base title="Subteams" description="The ION-I subteams building each stage of our gridded ion thruster.">
+  <PageHeader
+    eyebrow="Subteams"
+    title="One thruster, four teams."
+    lede="Three hardware subteams build the thruster stage by stage, from electron source to beam. Scientific Visualization ties the physics together in simulation and figures."
+  />
+  <section class="section">
+    <div class="container list">
+      {
+        subteams.map((t, i) => (
+          <a class="row card" href={url(`/subteams/${t.id}/`)}>
+            <Image src={t.data.cover} alt={t.data.coverAlt} widths={[500, 900]} sizes="(max-width: 760px) 100vw, 420px" class="row-img" />
+            <div class="row-body">
+              <span class="row-index">{String(i + 1).padStart(2, '0')}</span>
+              <span class="row-stage">{t.data.stage}</span>
+              <h2>{t.data.title}</h2>
+              <p>{t.data.summary}</p>
+              <div class="row-foot">
+                <span class="tag">{t.data.status}</span>
+                <span class="row-link">Read more →</span>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .list {
+    display: grid;
+    gap: 20px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s;
+  }
+  .row:hover {
+    color: var(--text);
+    border-color: rgba(56, 214, 247, 0.45);
+  }
+  .row-img {
+    width: 100%;
+    height: 100%;
+    min-height: 240px;
+    object-fit: cover;
+    background: #cfd6de;
+  }
+  .row-body {
+    padding: clamp(20px, 3vw, 34px);
+    display: flex;
+    flex-direction: column;
+  }
+  .row-index {
+    font-family: var(--font-display);
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .row-stage {
+    color: var(--cyan);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin: 0.4em 0 0.3em;
+  }
+  h2 {
+    font-size: 1.7rem;
+    margin-bottom: 0.35em;
+  }
+  .row-body p {
+    color: var(--muted);
+    flex: 1;
+  }
+  .row-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .row-link {
+    color: var(--cyan);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  @media (max-width: 760px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+    .row-img {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

@@ -1,0 +1,401 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ThrusterExplainer from '../components/ThrusterExplainer.tsx';
+import { milestones } from '../data/milestones';
+import { url } from '../lib/url';
+import hero from '../assets/photos/plasma-viewport.jpg';
+import award from '../assets/photos/eoh-award.jpg';
+import demo from '../assets/photos/eoh-demo.jpg';
+import team from '../assets/photos/team-2026.jpg';
+
+const subteams = (await getCollection('subteams')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base>
+  <section class="hero">
+    <Image src={hero} alt="" class="hero-bg" widths={[800, 1400, 2400]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="hero-shade"></div>
+    <div class="container hero-inner">
+      <span class="eyebrow">Electric Propulsion Initiative · UIUC</span>
+      <h1>Building an ion thruster, <br />starting from the electron.</h1>
+      <p class="lede">
+        ION-I is an undergraduate team at the University of Illinois designing, simulating, and testing its first gridded ion
+        thruster: hollow cathode, discharge chamber, and ion optics.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#thruster">How it works</a>
+        <a class="btn" href={url('/subteams/')}>Our subteams</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section mission">
+    <div class="container mission-grid">
+      <div>
+        <span class="eyebrow">Mission</span>
+        <h2>Hands-on electric propulsion, for undergraduates.</h2>
+      </div>
+      <div>
+        <p class="lede">
+          We give undergraduate students hands-on projects built around recent innovations in electric propulsion: plasma
+          physics, computation, and systems engineering, all on real hardware in a real vacuum chamber.
+        </p>
+        <ul class="facts">
+          <li><strong>3</strong><span>hardware subteams, one thruster</span></li>
+          <li><strong>Ar</strong><span>argon propellant</span></li>
+          <li><strong>2026</strong><span>EOH theme award, 3rd place</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="thruster">
+    <div class="container">
+      <span class="eyebrow">How it works</span>
+      <h2>Three stages from electron to thrust.</h2>
+      <p class="lede">
+        Each stage of the thruster is its own subteam. Pick a stage to see what it does and who is building it.
+      </p>
+      <div class="explainer">
+        <ThrusterExplainer client:visible />
+      </div>
+      <p class="note">
+        ION-I's first thruster runs on argon and, for now, has no separate neutralizer cathode.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Subteams</span>
+      <h2>Who builds what.</h2>
+      <div class="team-grid">
+        {
+          subteams.map((t) => (
+            <a class="team-card card" href={url(`/subteams/${t.id}/`)}>
+              <Image src={t.data.cover} alt={t.data.coverAlt} widths={[400, 800]} sizes="(max-width: 720px) 100vw, 360px" class="team-img" />
+              <div class="team-body">
+                <span class="team-stage">{t.data.stage}</span>
+                <h3>{t.data.title}</h3>
+                <p>{t.data.summary}</p>
+                <span class="tag">{t.data.status}</span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container timeline-wrap">
+      <div>
+        <span class="eyebrow">2026–27</span>
+        <h2>This year.</h2>
+        <p class="lede">Design reviews this fall, hardware in the spring, and conferences to close the year. Dates are planned and may shift.</p>
+      </div>
+      <ol class="timeline">
+        {
+          milestones.map((m) => (
+            <li class={m.done ? 'done' : ''}>
+              <span class="t-date">{m.date}</span>
+              <span class="t-title">{m.title}</span>
+              <span class="t-team">{m.team}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Highlights</span>
+      <h2>Engineering Open House 2026.</h2>
+      <div class="highlights">
+        <figure class="hl hl-wide">
+          <Image src={demo} alt="A team member presenting a projected plasma simulation beside the IonSpark hardware" widths={[600, 1200]} sizes="(max-width: 720px) 100vw, 740px" />
+          <figcaption>Live demo: IonSpark hardware alongside our plasma simulation.</figcaption>
+        </figure>
+        <figure class="hl">
+          <Image src={award} alt="Plaque reading Forging the Future Theme Award, 3rd Place, IonSpark, 2026" widths={[400, 800]} sizes="(max-width: 720px) 100vw, 360px" />
+          <figcaption>IonSpark took 3rd place in the "Forging the Future" theme award.</figcaption>
+        </figure>
+      </div>
+      <a class="more" href={url('/gallery/')}>See the gallery →</a>
+    </div>
+  </section>
+
+  <section class="section join">
+    <div class="container join-grid">
+      <Image src={team} alt="ION-I members standing in front of the club logo" widths={[600, 1200]} sizes="(max-width: 720px) 100vw, 560px" class="join-img" />
+      <div>
+        <span class="eyebrow">Get involved</span>
+        <h2>Join ION-I.</h2>
+        <p class="lede">
+          We recruit every fall at Quad Day and our info nights, and each subteam holds its own info sessions after. No
+          propulsion background needed, just curiosity.
+        </p>
+        <a class="btn" href={url('/research/')}>Read our work</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(88vh, 820px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 50%;
+  }
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(6, 14, 26, 0.94) 0%, rgba(6, 14, 26, 0.7) 45%, rgba(6, 14, 26, 0.15) 100%),
+      linear-gradient(0deg, rgba(6, 14, 26, 1) 0%, rgba(6, 14, 26, 0) 40%);
+  }
+  .hero-inner {
+    position: relative;
+    padding-top: 120px;
+    padding-bottom: clamp(56px, 9vw, 104px);
+  }
+  .hero h1 {
+    max-width: 26ch;
+  }
+  .hero .lede {
+    color: #c3d1e2;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-top: 1.8rem;
+  }
+
+  .mission-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: clamp(24px, 5vw, 72px);
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 1.8rem 0 0;
+  }
+  .facts li {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    background: var(--bg-2);
+  }
+  .facts strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    color: var(--amber);
+    line-height: 1.1;
+    margin-bottom: 0.2em;
+  }
+  .facts span {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .explainer {
+    margin-top: 2rem;
+  }
+  .note {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 18px;
+    margin-top: 2rem;
+  }
+  .team-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .team-card:hover {
+    color: var(--text);
+    border-color: rgba(56, 214, 247, 0.45);
+    transform: translateY(-3px);
+  }
+  .team-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    background: #cfd6de;
+  }
+  .team-body {
+    padding: 18px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .team-stage {
+    font-size: 0.78rem;
+    color: var(--cyan);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35em;
+  }
+  .team-body p {
+    color: var(--muted);
+    font-size: 0.94rem;
+    flex: 1;
+  }
+  .team-body .tag {
+    align-self: flex-start;
+  }
+
+  .timeline-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(24px, 5vw, 72px);
+  }
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--line-strong);
+  }
+  .timeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    column-gap: 1rem;
+    padding: 0 0 1.25rem 1.5rem;
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 0.45em;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--cyan);
+  }
+  .timeline li.done::before {
+    background: var(--cyan);
+  }
+  .t-date {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .t-title {
+    color: var(--text);
+  }
+  .t-team {
+    grid-column: 2;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .highlights {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+    margin-top: 2rem;
+  }
+  .hl {
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-2);
+    display: flex;
+    flex-direction: column;
+  }
+  .hl img {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+  .hl:not(.hl-wide) img {
+    aspect-ratio: 3 / 4;
+  }
+  .hl figcaption {
+    padding: 12px 16px 14px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .more {
+    display: inline-block;
+    margin-top: 1.4rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .join-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(24px, 5vw, 64px);
+    align-items: center;
+  }
+  .join-img {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  @media (max-width: 860px) {
+    .mission-grid,
+    .timeline-wrap,
+    .join-grid,
+    .highlights {
+      grid-template-columns: 1fr;
+    }
+    .hl:not(.hl-wide) img {
+      aspect-ratio: 4 / 3;
+    }
+  }
+  @media (max-width: 520px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+    .timeline li {
+      grid-template-columns: 1fr;
+    }
+    .t-team {
+      grid-column: 1;
+    }
+    .hero h1 br {
+      display: none;
+    }
+  }
+</style>

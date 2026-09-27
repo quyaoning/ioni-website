@@ -1,0 +1,68 @@
+---
+import { url } from '../lib/url';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div>
+      <p class="motto">Thrust the Process</p>
+      <p class="small">
+        ION-I · Electric Propulsion Initiative<br />
+        Grainger College of Engineering, University of Illinois Urbana-Champaign
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <a href={url('/subteams/')}>Subteams</a>
+      <a href={url('/research/')}>Research</a>
+      <a href={url('/gallery/')}>Gallery</a>
+    </nav>
+  </div>
+  <div class="container legal small">© {year} ION-I. Built by the Scientific Visualization subteam.</div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    background: var(--bg-2);
+    padding: 48px 0 28px;
+    margin-top: 0;
+  }
+  .grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .motto {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--amber);
+    margin-bottom: 0.6em;
+  }
+  .small {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  nav {
+    display: flex;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  nav a:hover {
+    color: var(--text);
+  }
+  .legal {
+    margin-top: 2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--line);
+  }
+</style>

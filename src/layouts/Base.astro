@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'ION-I, the Electric Propulsion Initiative at the University of Illinois Urbana-Champaign: undergraduates designing, simulating, and testing a gridded ion thruster.',
+} = Astro.props;
+const fullTitle = title ? `${title} · ION-I` : 'ION-I · Electric Propulsion Initiative';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#060e1a" />
+    <link rel="icon" type="image/png" href={url('/favicon.png')} />
+    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('/logo-512.png'), Astro.site)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 8px;
+    z-index: 100;
+    background: var(--cyan);
+    color: #04121f;
+    padding: 0.5em 1em;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .skip:focus {
+    left: 8px;
+  }
+</style>
